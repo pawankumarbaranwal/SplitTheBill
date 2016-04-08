@@ -19,4 +19,8 @@
     <string name="title_split">Split Bill</string>
     <string name="title_friends">Friends</string>
     <string name="title_home">Home</string>
+    <string name="title_activity_add_freind">Add Friend</string>
+    <string name="et_name">Name</string>
+    <string name="et_email">Email</string>
+    <string name="btn_submit">Submit</string>
 </resources>

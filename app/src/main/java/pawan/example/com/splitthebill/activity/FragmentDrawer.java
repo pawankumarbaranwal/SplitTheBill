@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import pawan.example.com.splitthebill.activity.R;
 import pawan.example.com.splitthebill.adapter.NavigationDrawerAdapter;
 import pawan.example.com.splitthebill.model.NavDrawerItem;
 
