@@ -7,8 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import pawan.example.com.splitthebill.dto.Friend;
 
 /**
  * Created by Pawan on 4/9/2016.
@@ -16,13 +22,15 @@ import android.widget.Toast;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     private static final String TAG = "CustomAdapter";
 
-    private String[] mDataSet;
+    private List<Friend> friendList =new ArrayList<>();
     Context context;
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public  class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView tvFriendName;
+        private final TextView tvTotalAmount;
+        private final RelativeLayout rlElement;
 
         public ViewHolder(View v) {
             super(v);
@@ -35,21 +43,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
                 }
             });
-            textView = (TextView) v.findViewById(R.id.tvFriendName);
-        }
-
-        public TextView getTextView() {
-            return textView;
+            tvFriendName = (TextView) v.findViewById(R.id.tvFriendName);
+            tvTotalAmount = (TextView) v.findViewById(R.id.tvTotalAmount);
+            rlElement= (RelativeLayout) v.findViewById(R.id.rlElement);
         }
     }
 
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
-    public CustomAdapter(String[] dataSet,Context context) {
-        mDataSet = dataSet;
+    public CustomAdapter(List<Friend> friendList,Context context) {
+        this.friendList = friendList;
         this.context=context;
     }
 
@@ -70,11 +75,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(mDataSet[position]);
-        viewHolder.textView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.tvFriendName.setText(friendList.get(position).getFriendName());
+        viewHolder.tvTotalAmount.setText(friendList.get(position).getAmount()+"");
+        viewHolder.rlElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,""+mDataSet[position],Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,""+friendList.get(position).getFriendName(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, FriendHisaab.class);
                 context.startActivity(intent);
             }
@@ -84,6 +90,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return friendList.size();
+        //return 0;
     }
 }

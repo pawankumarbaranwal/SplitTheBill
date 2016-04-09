@@ -25,6 +25,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /*
  * MainActivity class that loads MainFragment
  */
@@ -58,15 +61,21 @@ public class AddFriend extends Activity implements View.OnClickListener{
     }
     protected void createDatabase(){
         db=openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FriendName VARCHAR,FriendAddress VARCHAR);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," +
+                "FriendName VARCHAR, " +
+                "FriendEmailId VARCHAR," +
+                "Amount VARCHAR, " +
+                "SpentDate DATE," +
+                "Sign VARCHAR);");
     }
     protected void insertIntoDB(){
+        Date date=Calendar.getInstance().getTime();
         String friendName = etFriendName.getText().toString();
         String friendEmailId = etFriendEmailId.getText().toString();
         if(friendName.equals("") || friendEmailId.equals("")){
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_LONG).show();
         }
-        String query = "INSERT INTO FRIENDS (FriendName,FriendAddress) VALUES('"+friendName+"', '"+friendEmailId+"');";
+        String query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Amount,SpentDate,Sign) VALUES('"+friendName+"', '"+friendEmailId+"', '"+"100"+"', '"+ Calendar.getInstance().getTime()+"', '"+"-"+"');";
         db.execSQL(query);
         Toast.makeText(getApplicationContext(),"Saved Successfully", Toast.LENGTH_LONG).show();
 

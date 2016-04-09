@@ -11,11 +11,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import pawan.example.com.splitthebill.dto.Friend;
 
 
 /**
@@ -43,6 +50,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected String[] mDataset;
+    protected List<Friend> friendList=new ArrayList<>();
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -75,7 +83,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(mDataset,getActivity());
+        mAdapter = new CustomAdapter(friendList,getActivity());
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER);
@@ -138,16 +146,35 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         super.onSaveInstanceState(savedInstanceState);
     }
     private void initDataset() {
+        Log.d("Coming","x");
         int i=0;
         mDataset = new String[DATASET_COUNT];
         db=getActivity().openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
         c = db.rawQuery("SELECT * FROM FRIENDS", null);
         c.moveToFirst();
+        Friend friend =new Friend();
+
+        friend.setFriendName(c.getString(1));
+        friend.setFriendEmailId(c.getString(2));
+        friend.setDescription(c.getString(3));
+        friend.setAmount(c.getInt(4));
+        //friend.setSpentDate((Date)c.getString(3));
+        //friend.setSign((Character)c.getString(5));
+        friendList.add(friend);
         String name = c.getString(1);
         mDataset[i]=name;
         while (!c.isLast()) {
             i++;
             c.moveToNext();
+            friend =new Friend();
+
+            friend.setFriendName(c.getString(1));
+            friend.setFriendEmailId(c.getString(2));
+            friend.setDescription(c.getString(3));
+            friend.setAmount(Integer.parseInt(c.getString(3)));
+            //friend.setSpentDate((Date)c.getString(3));
+            //friend.setSign((Character)c.getString(5));
+            friendList.add(friend);
             name = c.getString(1);
             mDataset[i]=name;
         }
