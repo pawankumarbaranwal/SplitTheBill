@@ -1,17 +1,3 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
-
 package pawan.example.com.splitthebill.activity;
 
 import android.app.Activity;
@@ -28,9 +14,6 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
-/*
- * MainActivity class that loads MainFragment
- */
 public class AddFriend extends Activity implements View.OnClickListener{
 
     EditText etFriendName;
@@ -61,12 +44,13 @@ public class AddFriend extends Activity implements View.OnClickListener{
     }
     protected void createDatabase(){
         db=openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," +
+       /* db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," +
                 "FriendName VARCHAR, " +
                 "FriendEmailId VARCHAR," +
+                "Description VARCHAR," +
                 "Amount VARCHAR, " +
                 "SpentDate DATE," +
-                "Sign VARCHAR);");
+                "Sign VARCHAR);");*/
     }
     protected void insertIntoDB(){
         Date date=Calendar.getInstance().getTime();
@@ -75,19 +59,9 @@ public class AddFriend extends Activity implements View.OnClickListener{
         if(friendName.equals("") || friendEmailId.equals("")){
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_LONG).show();
         }
-        String query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Amount,SpentDate,Sign) VALUES('"+friendName+"', '"+friendEmailId+"', '"+"100"+"', '"+ Calendar.getInstance().getTime()+"', '"+"-"+"');";
+        String query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Amount,SpentDate,Sign) VALUES('"+friendName+"', '"+friendEmailId+"', '"+"0"+"', '"+ Calendar.getInstance().getTime()+"', '"+"-"+"');";
         db.execSQL(query);
         Toast.makeText(getApplicationContext(),"Saved Successfully", Toast.LENGTH_LONG).show();
 
-        c = db.rawQuery("SELECT * FROM FRIENDS", null);
-        c.moveToFirst();
-        showRecords();
     }
-    protected void showRecords() {
-        String id = c.getString(0);
-        String friendName = c.getString(1);
-        String friendEmailId= c.getString(2);
-        Log.i("Test",id+"\t"+friendName+"\t"+friendEmailId);
-    }
-
 }

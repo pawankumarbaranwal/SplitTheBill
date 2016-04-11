@@ -35,33 +35,11 @@ public class FriendHisaab extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (v==submit) {
-            insertIntoDB();
 
         }
     }
     protected void createDatabase(){
         db=openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FriendName VARCHAR,FriendAddress VARCHAR);");
+//        db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FriendName VARCHAR,FriendAddress VARCHAR);");
     }
-    protected void insertIntoDB(){
-        String friendName = etFriendName.getText().toString();
-        String friendEmailId = etFriendEmailId.getText().toString();
-        if(friendName.equals("") || friendEmailId.equals("")){
-            Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_LONG).show();
-        }
-        String query = "INSERT INTO FRIENDS (FriendName,FriendAddress) VALUES('"+friendName+"', '"+friendEmailId+"');";
-        db.execSQL(query);
-        Toast.makeText(getApplicationContext(),"Saved Successfully", Toast.LENGTH_LONG).show();
-
-        c = db.rawQuery("SELECT * FROM FRIENDS", null);
-        c.moveToFirst();
-        showRecords();
-    }
-    protected void showRecords() {
-        String id = c.getString(0);
-        String friendName = c.getString(1);
-        String friendEmailId= c.getString(2);
-        Log.i("Test",id+"\t"+friendName+"\t"+friendEmailId);
-    }
-
 }

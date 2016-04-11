@@ -15,12 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import pawan.example.com.splitthebill.dto.Friend;
 
@@ -50,7 +50,9 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected String[] mDataset;
-    protected List<Friend> friendList=new ArrayList<>();
+    protected List<Friend> friendList = new ArrayList<>();
+    protected List<Friend> finalFriendList = new ArrayList<>();
+
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -83,7 +85,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(friendList,getActivity());
+        mAdapter = new CustomAdapter(finalFriendList, getActivity());
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER);
@@ -111,8 +113,9 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getActivity(),"SHOW",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "SHOW", Toast.LENGTH_SHORT).show();
     }
+
     public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
         int scrollPosition = 0;
 
@@ -139,44 +142,68 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(scrollPosition);
     }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save currently selected layout manager.
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
     }
+
     private void initDataset() {
-        Log.d("Coming","x");
-        int i=0;
+        Log.d("Coming", "x");
+        int i = 0;
+        String name;
+        Friend friend = new Friend();
         mDataset = new String[DATASET_COUNT];
-        db=getActivity().openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
+        db = getActivity().openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
         c = db.rawQuery("SELECT * FROM FRIENDS", null);
-        c.moveToFirst();
-        Friend friend =new Friend();
+        if (c.moveToFirst()) {
+            Log.i("pppppppp", c.getString(1) + "\t" + c.getString(2) + "\t" + c.getString(3) + "\t" + c.getString(4) + "\t" + c.getString(5));
+                friend.setFriendName(c.getString(1) + "");
+                friend.setFriendEmailId(c.getString(2) + "");
+                friend.setDescription(c.getString(3) + "");
+                friend.setAmount(Integer.parseInt(c.getString(4)));
+                //friend.setSpentDate((Date)c.getString(3));
+                //friend.setSign((Character)c.getString(5));
+                friendList.add(friend);
+                name = c.getString(1);
+                mDataset[i] = name;
+            while (!c.isLast()) {
+                i++;
+                c.moveToNext();
+                friend = new Friend();
+                    friend.setFriendName(c.getString(1));
+                    friend.setFriendEmailId(c.getString(2));
+                    friend.setDescription(c.getString(3));
+                    friend.setAmount(Integer.parseInt(c.getString(4)));
+                    //friend.setSpentDate((Date)c.getString(3));
+                    //friend.setSign((Character)c.getString(5));
+                    friendList.add(friend);
+                    name = c.getString(2);
+                    mDataset[i] = name;
+            }
 
-        friend.setFriendName(c.getString(1));
-        friend.setFriendEmailId(c.getString(2));
-        friend.setDescription(c.getString(3));
-        friend.setAmount(c.getInt(4));
-        //friend.setSpentDate((Date)c.getString(3));
-        //friend.setSign((Character)c.getString(5));
-        friendList.add(friend);
-        String name = c.getString(1);
-        mDataset[i]=name;
-        while (!c.isLast()) {
-            i++;
-            c.moveToNext();
-            friend =new Friend();
-
-            friend.setFriendName(c.getString(1));
-            friend.setFriendEmailId(c.getString(2));
-            friend.setDescription(c.getString(3));
-            friend.setAmount(Integer.parseInt(c.getString(3)));
-            //friend.setSpentDate((Date)c.getString(3));
-            //friend.setSign((Character)c.getString(5));
-            friendList.add(friend);
-            name = c.getString(1);
-            mDataset[i]=name;
+            for (int x=0;x<friendList.size();x++){
+                getTotalAmount(friendList.get(x).getFriendEmailId());
+            }
+            Set<Friend> s= new HashSet<Friend>();
+            s.addAll(finalFriendList);
+            finalFriendList = new ArrayList<Friend>();
+            finalFriendList.addAll(s);
         }
+    }
+    public void getTotalAmount(String emailId) {
+        int sum = 0;
+        Friend friend =new Friend();
+        for (int i = 0; i < friendList.size(); i++) {
+            if (friendList.get(i).getFriendEmailId().equals(emailId)) {
+                sum = sum + friendList.get(i).getAmount();
+            }
+        }
+        friend.setFriendEmailId(emailId);
+        friend.setAmount(sum);
+        finalFriendList.add(friend);
+        //return sum;
     }
 }

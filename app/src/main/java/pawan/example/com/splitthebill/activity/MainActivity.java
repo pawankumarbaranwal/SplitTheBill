@@ -1,5 +1,9 @@
 package pawan.example.com.splitthebill.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,23 +11,32 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
+    private SQLiteDatabase db;
+    private Cursor c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final String PREFS_NAME = "MyPrefsFile";
 
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        if (settings.getBoolean("first_time", true)) {
+            Log.d("Comments", "First time");
+            settings.edit().putBoolean("first_time", false).commit();
+            createDatabase();
+        }
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
@@ -36,6 +49,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         // display the first navigation drawer view on app launch
         displayView(1);
+    }
+
+    private void createDatabase() {
+        db=this.openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," +
+                "FriendName VARCHAR, " +
+                "FriendEmailId VARCHAR," +
+                "Description VARCHAR," +
+                "Amount VARCHAR, " +
+                "SpentDate DATE," +
+                "Sign VARCHAR);");
     }
 
 
@@ -84,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_friends);
                 break;
             case 2:
-                fragment = new MessagesFragment();
+                fragment = new SplitTheBillFragment();
                 title = getString(R.string.title_split);
                 break;
             default:
