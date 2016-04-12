@@ -85,6 +85,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             public void onClick(View view) {
                 Toast.makeText(context, "" + friendList.get(position).getFriendEmailId(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, FriendHisaab.class);
+                intent.putExtra("FriendEmailId",friendList.get(position).getFriendEmailId());
                 context.startActivity(intent);
             }
         });

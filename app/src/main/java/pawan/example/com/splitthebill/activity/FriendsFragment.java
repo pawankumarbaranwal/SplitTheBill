@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +28,7 @@ import pawan.example.com.splitthebill.dto.Friend;
 
 
 /**
- * Created by Ravi on 29/07/15.
+ * Created by Pawan on 29/05/16.
  */
 public class FriendsFragment extends Fragment implements View.OnClickListener {
 

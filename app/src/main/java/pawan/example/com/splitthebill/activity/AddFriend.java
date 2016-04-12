@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,7 @@ public class AddFriend extends Activity implements View.OnClickListener{
     Button submit;
     private SQLiteDatabase db;
     private Cursor c;
+    private Toolbar mToolbar;
 
 
     @Override
@@ -30,6 +33,9 @@ public class AddFriend extends Activity implements View.OnClickListener{
         etFriendName=(EditText)findViewById(R.id.etName);
         etFriendEmailId=(EditText)findViewById(R.id.etEmail);
         submit=(Button)findViewById(R.id.btnSubmitFriendName);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitleTextColor(Color.WHITE);
+        mToolbar.setTitle("Add a Friend");
         createDatabase();
         submit.setOnClickListener(this);
 
@@ -58,10 +64,10 @@ public class AddFriend extends Activity implements View.OnClickListener{
         String friendEmailId = etFriendEmailId.getText().toString();
         if(friendName.equals("") || friendEmailId.equals("")){
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_LONG).show();
+        }else {
+            String query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Amount,SpentDate,Sign) VALUES('" + friendName + "', '" + friendEmailId + "', '" + "0" + "', '" + Calendar.getInstance().getTime() + "', '" + "-" + "');";
+            db.execSQL(query);
+            Toast.makeText(getApplicationContext(), "Saved Successfully", Toast.LENGTH_LONG).show();
         }
-        String query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Amount,SpentDate,Sign) VALUES('"+friendName+"', '"+friendEmailId+"', '"+"0"+"', '"+ Calendar.getInstance().getTime()+"', '"+"-"+"');";
-        db.execSQL(query);
-        Toast.makeText(getApplicationContext(),"Saved Successfully", Toast.LENGTH_LONG).show();
-
     }
 }
