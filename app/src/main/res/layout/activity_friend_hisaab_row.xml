@@ -1,24 +1,25 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:layout_margin="4dp">
+    android:layout_height="40dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/tvItemDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="4" />
 
 
         <TextView
             android:id="@+id/tvItemAmount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_weight="1" />
 
 
@@ -26,6 +27,7 @@
             android:id="@+id/tvItemPurchaseDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:gravity="right"
+            android:layout_weight="3" />
     </LinearLayout>
 </android.support.v7.widget.CardView>
