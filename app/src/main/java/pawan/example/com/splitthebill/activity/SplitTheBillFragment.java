@@ -166,9 +166,10 @@ public class SplitTheBillFragment extends Fragment implements View.OnClickListen
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,Amount,SpentDate,Sign) VALUES('" + "','" + friendEmail + "', '" + description + "', '" + "-"+Integer.parseInt(money)/2  + "', '" + Calendar.getInstance().getTime() + "', '" + "-" + "');";
             } else if (splitScienario.equals("Paid by Other and You Owe the full amount")) {
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,Amount,SpentDate,Sign) VALUES('" + "','" + friendEmail + "', '" + description + "', '" + "-"+Integer.parseInt(money) + "', '" + Calendar.getInstance().getTime() + "', '" + "-" + "');";
+            }else{
+                query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,Amount,SpentDate,Sign) VALUES('" + "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money)/2 + "', '" + Calendar.getInstance().getTime() + "', '" + "-" + "');";
             }
             db.execSQL(query);
-
             Toast.makeText(getActivity(), "Saved Successfully", Toast.LENGTH_LONG).show();
         }
     }

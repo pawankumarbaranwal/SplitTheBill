@@ -38,7 +38,7 @@
         android:layout_margin="10dp"
         android:gravity="center"
         android:textSize="25sp"
-        android:text="Split the Bill"
+        android:text="Paid by You and Split Equally"
         />
 
     <LinearLayout
