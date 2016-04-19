@@ -165,7 +165,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                 friend.setFriendName(c.getString(1) + "");
                 friend.setFriendEmailId(c.getString(2) + "");
                 friend.setDescription(c.getString(3) + "");
-                friend.setAmount(Integer.parseInt(c.getString(4)));
+                friend.setSplittedAmount(Integer.parseInt(c.getString(4)));
                 //friend.setSpentDate((Date)c.getString(3));
                 //friend.setSign((Character)c.getString(5));
                 friendList.add(friend);
@@ -178,7 +178,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                     friend.setFriendName(c.getString(1));
                     friend.setFriendEmailId(c.getString(2));
                     friend.setDescription(c.getString(3));
-                    friend.setAmount(Integer.parseInt(c.getString(4)));
+                    friend.setSplittedAmount(Integer.parseInt(c.getString(4)));
                     //friend.setSpentDate((Date)c.getString(3));
                     //friend.setSign((Character)c.getString(5));
                     friendList.add(friend);
@@ -200,11 +200,11 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         Friend friend =new Friend();
         for (int i = 0; i < friendList.size(); i++) {
             if (friendList.get(i).getFriendEmailId().equals(emailId)) {
-                sum = sum + friendList.get(i).getAmount();
+                sum = sum + friendList.get(i).getSplittedAmount();
             }
         }
         friend.setFriendEmailId(emailId);
-        friend.setAmount(sum);
+        friend.setSplittedAmount(sum);
         finalFriendList.add(friend);
         //return sum;
     }

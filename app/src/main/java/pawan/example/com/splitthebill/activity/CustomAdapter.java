@@ -79,7 +79,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         viewHolder.tvFriendName.setText(friendList.get(position).getFriendEmailId());
         //getTotalAmount(friendList.get(position).getFriendEmailId());
         //viewHolder.tvTotalAmount.setText(getTotalAmount(friendList.get(position).getFriendEmailId()) + "");
-        viewHolder.tvTotalAmount.setText(friendList.get(position).getAmount() + "");
+        viewHolder.tvTotalAmount.setText(friendList.get(position).getSplittedAmount() + "");
         viewHolder.rlElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +102,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         int sum = 0;
         for (int i = 0; i < friendList.size(); i++) {
             if (friendList.get(i).getFriendEmailId().equals(emailId)) {
-                sum = sum + friendList.get(i).getAmount();
+                sum = sum + friendList.get(i).getSplittedAmount();
             }
         }
         return sum;

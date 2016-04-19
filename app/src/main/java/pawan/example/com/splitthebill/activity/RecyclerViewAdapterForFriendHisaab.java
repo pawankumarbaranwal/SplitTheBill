@@ -33,8 +33,17 @@ public class RecyclerViewAdapterForFriendHisaab extends RecyclerView.Adapter<Rec
     public void onBindViewHolder(RecyclerViewAdapterForFriendHisaab.FriendHisaabViewHolder holder, int position) {
         Friend friend= hisaabList.get(position);
         holder.tvItemDescription.setText(friend.getDescription());
-        holder.tvItemAmount.setText(friend.getAmount()+"");
         holder.tvItemPurchaseDate.setText(friend.getSpentDate()+"");
+        if (friend.getPaidBy().equals("You"))
+        {
+            holder.tvTotalAmountAndPaidBy.setText(friend.getPaidBy()+" Paid "+friend.getTotalAmount());
+            holder.tvItemAmount.setText("You will get back "+friend.getSplittedAmount()+"");
+        }else
+        {
+            holder.tvTotalAmountAndPaidBy.setText(friend.getFriendName()+" Paid "+friend.getTotalAmount());
+            holder.tvItemAmount.setText(friend.getFriendName()+" will get back "+(friend.getSplittedAmount()*-1)+"");
+        }
+
     }
     @Override
     public RecyclerViewAdapterForFriendHisaab.FriendHisaabViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -50,12 +59,14 @@ public class RecyclerViewAdapterForFriendHisaab extends RecyclerView.Adapter<Rec
         private TextView tvItemDescription;
         private TextView tvItemAmount;
         private TextView tvItemPurchaseDate;
+        private TextView tvTotalAmountAndPaidBy;
 
         public FriendHisaabViewHolder(View itemView) {
             super(itemView);
             tvItemDescription=(TextView)itemView.findViewById(R.id.tvItemDescription);
             tvItemAmount=(TextView)itemView.findViewById(R.id.tvItemAmount);
-            tvItemPurchaseDate=(TextView)itemView.findViewById(R.id.tvItemPurchaseDate);
+            tvItemPurchaseDate=(TextView) itemView.findViewById(R.id.tvItemPurchaseDate);
+            tvTotalAmountAndPaidBy=(TextView) itemView.findViewById(R.id.tvTotalAmountAndPaidBy);
         }
     }
 }

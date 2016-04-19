@@ -36,6 +36,7 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
     private Cursor c;
     private Toolbar mToolbar;
     private List<Friend> hisaabList = new ArrayList<Friend>();
+    String friendEmailId;
 
 
     @Override
@@ -50,13 +51,39 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
 
         RecyclerViewAdapterForFriendHisaab adapter = new RecyclerViewAdapterForFriendHisaab(hisaabList);
         rvHisaabList.setAdapter(adapter);
-        etFriendName = (EditText) findViewById(R.id.etName);
-        etFriendEmailId = (EditText) findViewById(R.id.etEmail);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setTitle("ssssssssssssss");
+
+        FriendsFragment friendsFragment=new FriendsFragment();
+        friendsFragment.getTotalAmount(friendEmailId);
+
+        Integer totalAmount =getTotalAmount(friendEmailId);
+        if (totalAmount>0)
+        {
+            mToolbar.setTitle(friendEmailId + " will return " + totalAmount + "");
+        }
+        else if(totalAmount<0)
+        {
+            mToolbar.setTitle("You will pay " + (totalAmount*-1) + "");
+        }else
+        {
+            mToolbar.setTitle("Settled ");
+        }
+
         //setSupportActionBar(mToolbar);
 
+    }
+
+    private Integer getTotalAmount(String friendEmailId) {
+        c = db.rawQuery("SELECT sum(splittedAmount) FROM FRIENDS WHERE  FRIENDEMAILID ='"+friendEmailId+"' AND DESCRIPTION IS NOT NULL ", null);
+        if ((c.moveToFirst()&&(c.getString(0)!=null)))
+        {
+            return Integer.parseInt(c.getString(0));
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     @Override
@@ -68,7 +95,7 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
         Friend friend = new Friend();
         db = openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
         Intent intent = getIntent();
-        String friendEmailId=intent.getStringExtra("FriendEmailId");
+        friendEmailId=intent.getStringExtra("FriendEmailId");
         c = db.rawQuery("SELECT * FROM FRIENDS WHERE  FRIENDEMAILID ='"+friendEmailId+"' AND DESCRIPTION IS NOT NULL ", null);
         if (c.moveToFirst()) {
 
@@ -79,9 +106,11 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
             friend.setFriendName(c.getString(1) + "");
             friend.setFriendEmailId(c.getString(2) + "");
             friend.setDescription(c.getString(3) + "");
-            friend.setAmount(Integer.parseInt(c.getString(4)));
+            friend.setSplittedAmount(Integer.parseInt(c.getString(4)));
+            friend.setTotalAmount(Integer.parseInt(c.getString(5)));
+            friend.setPaidBy(c.getString(7));
             try{
-                Date parsedDate = sdf.parse(c.getString(5));
+                Date parsedDate = sdf.parse(c.getString(6));
                 friend.setSpentDate(outputDate.format(parsedDate));
             }catch(Exception e ){
                 e.printStackTrace();
@@ -94,9 +123,11 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
                 friend.setFriendName(c.getString(1));
                 friend.setFriendEmailId(c.getString(2));
                 friend.setDescription(c.getString(3));
-                friend.setAmount(Integer.parseInt(c.getString(4)));
+                friend.setSplittedAmount(Integer.parseInt(c.getString(4)));
+                friend.setTotalAmount(Integer.parseInt(c.getString(5)));
+                friend.setPaidBy(c.getString(7));
                 try{
-                    Date parsedDate = sdf.parse(c.getString(5));
+                    Date parsedDate = sdf.parse(c.getString(6));
                     friend.setSpentDate(outputDate.format(parsedDate));
                 }catch(Exception e ) {
                     e.printStackTrace();

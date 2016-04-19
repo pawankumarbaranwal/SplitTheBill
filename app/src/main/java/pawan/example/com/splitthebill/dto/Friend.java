@@ -8,9 +8,10 @@ public class Friend {
     private String friendName;
     private String friendEmailId;
     private String description;
-    private Integer amount;
+    private Integer totalAmount;
+    private Integer splittedAmount;
     private String spentDate;
-    private Character sign;
+    private String paidBy;
 
     public String getFriendName() {
         return friendName;
@@ -36,12 +37,20 @@ public class Friend {
         this.description = description;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public Integer getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Integer getSplittedAmount() {
+        return splittedAmount;
+    }
+
+    public void setSplittedAmount(Integer splittedAmount) {
+        this.splittedAmount = splittedAmount;
     }
 
     public String getSpentDate() {
@@ -52,12 +61,12 @@ public class Friend {
         this.spentDate = spentDate;
     }
 
-    public Character getSign() {
-        return sign;
+    public String getPaidBy() {
+        return paidBy;
     }
 
-    public void setSign(Character sign) {
-        this.sign = sign;
+    public void setPaidBy(String paidBy) {
+        this.paidBy = paidBy;
     }
 
     @Override

@@ -57,9 +57,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 "FriendName VARCHAR, " +
                 "FriendEmailId VARCHAR," +
                 "Description VARCHAR," +
-                "Amount VARCHAR, " +
+                "SplittedAmount VARCHAR, " +
+                "TotalAmount VARCHAR, " +
                 "SpentDate DATE," +
-                "Sign VARCHAR);");
+                "PaidBy VARCHAR);");
     }
 
 
