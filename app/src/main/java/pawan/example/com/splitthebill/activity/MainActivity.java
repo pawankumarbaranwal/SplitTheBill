@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private static String TAG = MainActivity.class.getSimpleName();
@@ -52,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void createDatabase() {
+
+
+        File dir = new File("/sdcard/SplitTheBill");
+        dir.mkdirs();
+
+
         db=this.openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," +
                 "FriendName VARCHAR, " +
