@@ -25,11 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.mail.*;
-import javax.mail.internet.*;
-
-import java.util.Properties;
-import javax.mail.PasswordAuthentication;
 
 import pawan.example.com.splitthebill.dto.Friend;
 
@@ -163,7 +158,7 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
         }
     }
 
-    private void sendMail(String email, String subject, String messageBody) {
+   /* private void sendMail(String email, String subject, String messageBody) {
 
         String to = "pawankumarbaranwal@gmail.com";//change accordingly
 
@@ -200,5 +195,5 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }
