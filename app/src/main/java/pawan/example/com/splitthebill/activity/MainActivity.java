@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 "Description VARCHAR," +
                 "SplittedAmount VARCHAR, " +
                 "TotalAmount VARCHAR, " +
-                "SpentDate DATE," +
+                "SpentDate VARCHAR," +
                 "PaidBy VARCHAR);");
     }
 

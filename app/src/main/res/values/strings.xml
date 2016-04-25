@@ -26,4 +26,9 @@
     <string name="et_description">Description</string>
     <string name="et_money">Amount</string>
     <string name="tv_friend_name">Friends Name</string>
+    <string name="title_activity_test">test</string>
+    <string name="action_delete_friend">Delete Friend</string>
+    <string name="action_modify_friend">Modify Details</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -1,34 +1,41 @@
 package pawan.example.com.splitthebill.activity;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 import pawan.example.com.splitthebill.dto.Friend;
 
-public class FriendHisaab extends Activity implements View.OnClickListener {
+public class FriendHisaab extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etFriendName;
     private EditText etFriendEmailId;
@@ -49,7 +56,7 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvHisaabList.setLayoutManager(linearLayoutManager);
 
-        RecyclerViewAdapterForFriendHisaab adapter = new RecyclerViewAdapterForFriendHisaab(hisaabList);
+        RecyclerViewAdapterForFriendHisaab adapter = new RecyclerViewAdapterForFriendHisaab(hisaabList, this);
         rvHisaabList.setAdapter(adapter);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
@@ -66,7 +73,8 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
             mToolbar.setTitle("Settled ");
         }
 
-        //setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
@@ -90,12 +98,21 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
         Intent intent = getIntent();
         friendEmailId = intent.getStringExtra("FriendEmailId");
         c = db.rawQuery("SELECT * FROM FRIENDS WHERE  FRIENDEMAILID ='" + friendEmailId + "' AND DESCRIPTION IS NOT NULL ", null);
-        if (c.moveToFirst()) {
-
+        if (c.moveToFirst()) {/*
             SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-            SimpleDateFormat outputDate = new SimpleDateFormat("dd-MMM-yyyy");
+            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+            SimpleDateFormat outputDate = new SimpleDateFormat("dd-MMM-yyyy");*/
+
+
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy : hh/mm/ss");
+
+            long milliSeconds= Long.parseLong(c.getString(6));
+            Log.i("pppppppp", milliSeconds + "");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(milliSeconds);
 
             Log.i("pppppppp", c.getString(1) + "\t" + c.getString(2) + "\t" + c.getString(3) + "\t" + c.getString(4) + "\t" + c.getString(5));
+            Log.i("pppppppp", c.getString(6));
             friend.setFriendName(c.getString(1) + "");
             friend.setFriendEmailId(c.getString(2) + "");
             friend.setDescription(c.getString(3) + "");
@@ -103,8 +120,8 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
             friend.setTotalAmount(Integer.parseInt(c.getString(5)));
             friend.setPaidBy(c.getString(7));
             try {
-                Date parsedDate = sdf.parse(c.getString(6));
-                friend.setSpentDate(outputDate.format(parsedDate));
+                friend.setSpentDate(formatter.format(calendar.getTime()));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -119,9 +136,12 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
                 friend.setSplittedAmount(Integer.parseInt(c.getString(4)));
                 friend.setTotalAmount(Integer.parseInt(c.getString(5)));
                 friend.setPaidBy(c.getString(7));
+                milliSeconds= Long.parseLong(c.getString(6));
+                calendar.setTimeInMillis(milliSeconds);
                 try {
-                    Date parsedDate = sdf.parse(c.getString(6));
-                    friend.setSpentDate(outputDate.format(parsedDate));
+//                    Date parsedDate = sdf.parse("Mon Apr 25 21:33:53 IST 2016");
+                    //friend.setSpentDate(outputDate.format(parsedDate));
+                    friend.setSpentDate(formatter.format(calendar.getTime()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -158,42 +178,67 @@ public class FriendHisaab extends Activity implements View.OnClickListener {
         }
     }
 
-   /* private void sendMail(String email, String subject, String messageBody) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.friend_data_modification, menu);
+        return true;
+    }
 
-        String to = "pawankumarbaranwal@gmail.com";//change accordingly
-
-        //Get the session object
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("pawankumar910@gmail.com", "ddcdsfs");//change accordingly
-                    }
-                });
-
-        //compose message
-        try {
-
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("pawankumar910@gmail.com"));//change accordingly
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("Hello");
-            message.setText("No Testing.......");
-
-            //send message
-            Transport.send(message);
-
-            System.out.println("message sent successfully");
-
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_modify_friend) {
+            Toast.makeText(this,"action_modify_friend"+id,Toast.LENGTH_LONG).show();
+            /*intent =new Intent(this,ModifyFriendDetails.class);
+            startActivity(intent);*/
+            return true;
+        }else if (id == R.id.action_delete_friend){
+            Toast.makeText(this,"action_delete_friend"+id,Toast.LENGTH_LONG).show();
+            displayError(this,"Are you sure you want to delete this friend");
+            /*intent =new Intent(this,MainActivity.class);
+            startActivity(intent);*/
+            return true;
         }
-    }*/
+        return super.onOptionsItemSelected(item);
+    }
+    public void displayError(Context context, String message) {
+        final Dialog dialog = new Dialog(context, R.style.PauseDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_delete_friend);
+        final TextView error = (TextView) dialog.findViewById(R.id.tvErrorMessage);
+        final Button ok = (Button) dialog.findViewById(R.id.btnOK);
+        final Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
+        error.setText(message);
+
+        dialog.show();
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("setOnClickListener", "OK");
+                dialog.dismiss();
+                deleteFriend();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("setOnClickListener","Cancel");
+                dialog.dismiss();
+            }
+        });
+    }
+    private void deleteFriend() {
+
+        String[] whereArgs = new String[] { friendEmailId };
+        String whereClause = " FriendEmailId" + "=?";
+        db.delete("FRIENDS", whereClause, whereArgs);
+        Intent intent =new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 }

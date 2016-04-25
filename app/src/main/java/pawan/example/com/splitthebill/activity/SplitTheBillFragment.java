@@ -164,19 +164,19 @@ public class SplitTheBillFragment extends Fragment implements View.OnClickListen
         } else {
             if (splitScienario.equals("Paid by You and Split Equally")) {
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
-                        "VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTime() + "', '" + "You" + "');";
+                        "VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
             } else if (splitScienario.equals("Paid by You and Other Owe the full amount")) {
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
-                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + money + "', '" + money + "', '" + Calendar.getInstance().getTime() + "', '" + "You" + "');";
+                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + money + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
             } else if (splitScienario.equals("Paid by Other and Split Equally")) {
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
-                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTime() + "', '" + friendEmail + "');";
+                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + friendEmail + "');";
             } else if (splitScienario.equals("Paid by Other and You Owe the full amount")) {
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
-                        "VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) + "', '" + money + "', '" + Calendar.getInstance().getTime() + "', '" + friendEmail + "');";
+                        "VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + friendEmail + "');";
             } else {
                 query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
-                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTime() + "', '" + "You" + "');";
+                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
             }
             db.execSQL(query);
             Toast.makeText(getActivity(), "Saved Successfully", Toast.LENGTH_LONG).show();

@@ -1,7 +1,9 @@
 package pawan.example.com.splitthebill.activity;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,15 +38,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         public ViewHolder(View v) {
             super(v);
-            // Define click listener for the ViewHolder's View.
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, AddFriend.class);
-                    //startActivity(intent);
-                    Log.d(TAG, "Element " + getPosition() + " clicked.");
-                }
-            });
             tvFriendName = (TextView) v.findViewById(R.id.tvFriendName);
             tvTotalAmount = (TextView) v.findViewById(R.id.tvTotalAmount);
             rlElement = (RelativeLayout) v.findViewById(R.id.rlElement);
@@ -86,7 +79,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 Toast.makeText(context, "" + friendList.get(position).getFriendEmailId(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, FriendHisaab.class);
                 intent.putExtra("FriendEmailId",friendList.get(position).getFriendEmailId());
-                context.startActivity(intent);
+
+                Bundle bndlanimation =
+                        ActivityOptions.makeCustomAnimation(context, R.anim.animation, R.anim.animation2).toBundle();
+                context.startActivity(intent, bndlanimation);
+                //context.startActivity(intent);
             }
         });
     }
