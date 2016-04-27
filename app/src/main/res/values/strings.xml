@@ -5,7 +5,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_home">Home</string>
+    <string name="nav_item_home">Activities</string>
     <string name="nav_item_friends">Friends</string>
     <string name="nav_item_notifications">Split Bill</string>
 
@@ -18,7 +18,7 @@
 
     <string name="title_split">Split Bill</string>
     <string name="title_friends">Friends</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Activities</string>
     <string name="title_activity_add_freind">Add Friend</string>
     <string name="et_name">Name</string>
     <string name="et_email">Email</string>

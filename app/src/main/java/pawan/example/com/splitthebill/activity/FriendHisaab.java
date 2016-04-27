@@ -37,8 +37,6 @@ import pawan.example.com.splitthebill.dto.Friend;
 
 public class FriendHisaab extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etFriendName;
-    private EditText etFriendEmailId;
     private SQLiteDatabase db;
     private Cursor c;
     private Toolbar mToolbar;

@@ -66,7 +66,7 @@ public class AddFriend extends Activity implements View.OnClickListener{
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_LONG).show();
         }else {
             String query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
-                    "VALUES('" + friendName + "', '" + friendEmailId + "', '" + "0" + "', '" + "0" + "', '" + Calendar.getInstance().getTime() + "', '" + "-" + "');";
+                    "VALUES('" + friendName + "', '" + friendEmailId + "', '" + "0" + "', '" + "0" + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "-" + "');";
             db.execSQL(query);
             Toast.makeText(getApplicationContext(), "Saved Successfully", Toast.LENGTH_LONG).show();
         }
