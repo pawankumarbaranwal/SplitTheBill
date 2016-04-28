@@ -41,20 +41,13 @@
 
 
             <TextView
-                android:id="@+id/tvTotalAmountAndPaidBy"
+                android:id="@+id/tvTotalAmountAndDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="2" />
 
-            <TextView
-                android:id="@+id/tvItemAmount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="2" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

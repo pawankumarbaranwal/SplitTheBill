@@ -28,23 +28,19 @@ public class RecyclerViewAdapterForActivities extends RecyclerView.Adapter<Recyc
         this.activityList = activityList;
     }
 
-
     public class ActivitiesViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvItemDescription;
-        private TextView tvItemAmount;
         private TextView tvItemPurchaseDate;
-        private TextView tvTotalAmountAndPaidBy;
+        private TextView tvTotalAmountAndDescription;
 
         public ActivitiesViewHolder(View itemView) {
             super(itemView);
             tvItemDescription = (TextView) itemView.findViewById(R.id.tvItemDescription);
-            tvItemAmount = (TextView) itemView.findViewById(R.id.tvItemAmount);
             tvItemPurchaseDate = (TextView) itemView.findViewById(R.id.tvItemPurchaseDate);
-            tvTotalAmountAndPaidBy = (TextView) itemView.findViewById(R.id.tvTotalAmountAndPaidBy);
+            tvTotalAmountAndDescription = (TextView) itemView.findViewById(R.id.tvTotalAmountAndDescription);
         }
     }
-
 
     @Override
     public RecyclerViewAdapterForActivities.ActivitiesViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -59,14 +55,12 @@ public class RecyclerViewAdapterForActivities extends RecyclerView.Adapter<Recyc
         final Friend friend = activityList.get(position);
         holder.tvItemDescription.setText(friend.getDescription());
         holder.tvItemPurchaseDate.setText(friend.getSpentDate() + "");
-        /*if (friend.getPaidBy().equals("You")) {
-            holder.tvTotalAmountAndPaidBy.setText(friend.getPaidBy() + " Paid " + friend.getTotalAmount());
-            holder.tvItemAmount.setText("You will get back " + friend.getSplittedAmount() + "");
+        if (friend.getPaidBy().equals("You")) {
+            holder.tvTotalAmountAndDescription.setText(friend.getPaidBy() + " Paid " + friend.getTotalAmount()+ " and You will get back " + friend.getSplittedAmount() + "");
         } else {
-            holder.tvTotalAmountAndPaidBy.setText(friend.getFriendName() + " Paid " + friend.getTotalAmount());
-            holder.tvItemAmount.setText(friend.getFriendName() + " will get back " + (friend.getSplittedAmount() * -1) + "");
-        }*/
-        holder.tvItemDescription.setOnClickListener(new View.OnClickListener() {
+            holder.tvTotalAmountAndDescription.setText(friend.getFriendName() + " Paid " + friend.getTotalAmount()+  " and You owe " + (friend.getSplittedAmount()*-1) + "");
+        }
+      /*  holder.tvItemDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "" + friend.getFriendEmailId(), Toast.LENGTH_SHORT).show();
@@ -74,7 +68,7 @@ public class RecyclerViewAdapterForActivities extends RecyclerView.Adapter<Recyc
                 intent.putExtra("FriendEmailId", friend.getFriendEmailId());
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override

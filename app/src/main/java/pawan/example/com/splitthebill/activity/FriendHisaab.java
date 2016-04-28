@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 
 import pawan.example.com.splitthebill.dto.Friend;
@@ -238,5 +234,15 @@ public class FriendHisaab extends AppCompatActivity implements View.OnClickListe
         db.delete("FRIENDS", whereClause, whereArgs);
         Intent intent =new Intent(this,MainActivity.class);
         startActivity(intent);
+    }
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.shifttoright_enter, R.anim.shifttoright_exit);
+        }
+        else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

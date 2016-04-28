@@ -81,7 +81,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 intent.putExtra("FriendEmailId",friendList.get(position).getFriendEmailId());
 
                 Bundle bndlanimation =
-                        ActivityOptions.makeCustomAnimation(context, R.anim.animation, R.anim.animation2).toBundle();
+                        ActivityOptions.makeCustomAnimation(context, R.anim.shifttoleft_enter, R.anim.shifttoleft_exit).toBundle();
                 context.startActivity(intent, bndlanimation);
                 //context.startActivity(intent);
             }

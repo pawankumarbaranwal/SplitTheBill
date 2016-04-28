@@ -8,8 +8,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,7 +33,7 @@ import pawan.example.com.splitthebill.dto.Friend;
 /**
  * Created by Pawan on 29/03/16.
  */
-public class SplitTheBillActivity extends Activity implements View.OnClickListener {
+public class SplitTheBillActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SQLiteDatabase db;
     private Cursor c;
@@ -52,7 +55,15 @@ public class SplitTheBillActivity extends Activity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         initDataset();
 
-        setContentView(R.layout.fragment_split);
+        setContentView(R.layout.activity_split_the_bill);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            Toast.makeText(this, "opopopop", Toast.LENGTH_SHORT).show();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         tvAutocompleteFriendEmail = (AutoCompleteTextView)findViewById(R.id.tvAutocompleteFriendEmail);
         etDescription = (EditText)findViewById(R.id.etDescription);
@@ -171,7 +182,7 @@ public class SplitTheBillActivity extends Activity implements View.OnClickListen
         Log.i("testttttt","11");
         if (c.moveToFirst())
         {
-            Log.i("testttttt","11"+c.getString(1));
+            Log.i("testttttt", "11" + c.getString(1));
             return c.getString(1) + "";
 
         }
@@ -179,6 +190,21 @@ public class SplitTheBillActivity extends Activity implements View.OnClickListen
         {
             Log.i("testttttt","11"+c.getString(1));
             return null;
+        }
+    }
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
+                // if this doesn't work as desired, another possibility is to call `finish()` here.
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

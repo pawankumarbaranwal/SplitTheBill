@@ -64,22 +64,14 @@ public class ActivitiesFragment extends Fragment {
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
         if (savedInstanceState != null) {
-            // Restore saved layout manager type.
             mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
 
         RecyclerViewAdapterForActivities mAdapter = new RecyclerViewAdapterForActivities(activityList, getActivity());
-        // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-
-/*
-        RecyclerView recyclerViewForActivites = (RecyclerView) rootView.findViewById(R.id.recyclerViewForActivites);
-
-        RecyclerViewAdapterForActivities adapter = new RecyclerViewAdapterForActivities(activityList, getActivity());
-        recyclerViewForActivites.setAdapter(adapter);*/
         fabNewActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

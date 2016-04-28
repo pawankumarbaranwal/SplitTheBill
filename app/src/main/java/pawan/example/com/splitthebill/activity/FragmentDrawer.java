@@ -1,7 +1,7 @@
 package pawan.example.com.splitthebill.activity;
 
 /**
- * Created by Ravi on 29/07/15.
+ * Created by Pawan on 29/07/15.
  */
 
 import android.content.Context;
@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,8 @@ import pawan.example.com.splitthebill.model.NavDrawerItem;
 public class FragmentDrawer extends Fragment {
 
     private static String TAG = FragmentDrawer.class.getSimpleName();
-
+    TextView tvEmail;
+    TextView tvName;
     private RecyclerView recyclerView;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -70,6 +72,11 @@ public class FragmentDrawer extends Fragment {
                              Bundle savedInstanceState) {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        tvEmail=(TextView)layout.findViewById(R.id.tvEmail);
+        tvName=(TextView)layout.findViewById(R.id.tvName);
+        tvEmail.setText("rajatkumarbaranwal@gmail.com");
+        tvName.setText("rajat");
+
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
