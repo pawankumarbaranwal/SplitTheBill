@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setDrawerListener(this);
 
         // display the first navigation drawer view on app launch
-        displayView(1);
+        displayView(3);
     }
 
     private void createDatabase() {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         switch (position) {
             case 0:
                 fragment = new ActivitiesFragment();
-                title = getString(R.string.title_home);
+                title = getString(R.string.title_activities);
                 break;
             case 1:
                 fragment = new FriendsFragment();
@@ -120,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             case 2:
                 fragment = new SplitTheBillFragment();
                 title = getString(R.string.title_split);
+                break;
+            case 3:
+                fragment = new ExportAndEmailFragment();
+                title = getString(R.string.title_export_and_email);
                 break;
             default:
                 break;

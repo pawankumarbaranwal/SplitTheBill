@@ -5,20 +5,23 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_home">Activities</string>
+    <string name="nav_item_activities">Activities</string>
     <string name="nav_item_friends">Friends</string>
     <string name="nav_item_notifications">Split Bill</string>
+    <string name="nav_item_export_and_email">Export and Email</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_activities</item>
         <item>@string/nav_item_friends</item>
         <item>@string/nav_item_notifications</item>
+        <item>@string/nav_item_export_and_email</item>
     </string-array>
 
     <string name="title_split">Split Bill</string>
+    <string name="title_export_and_email">Export and Email</string>
     <string name="title_friends">Friends</string>
-    <string name="title_home">Activities</string>
+    <string name="title_activities">Activities</string>
     <string name="title_activity_add_freind">Add Friend</string>
     <string name="et_name">Name</string>
     <string name="et_email">Email</string>
@@ -31,4 +34,6 @@
     <string name="action_modify_friend">Modify Details</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="btn_export">Export to External Memory</string>
+    <string name="btn_email">Email</string>
 </resources>

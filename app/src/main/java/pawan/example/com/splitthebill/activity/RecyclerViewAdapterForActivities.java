@@ -56,7 +56,7 @@ public class RecyclerViewAdapterForActivities extends RecyclerView.Adapter<Recyc
         holder.tvItemDescription.setText(friend.getDescription());
         holder.tvItemPurchaseDate.setText(friend.getSpentDate() + "");
         if (friend.getPaidBy().equals("You")) {
-            holder.tvTotalAmountAndDescription.setText(friend.getPaidBy() + " Paid " + friend.getTotalAmount()+ " and You will get back " + friend.getSplittedAmount() + "");
+            holder.tvTotalAmountAndDescription.setText(friend.getPaidBy() + " Paid " + friend.getTotalAmount()+ " and "+friend.getFriendName()+" owe you " + friend.getSplittedAmount() + "");
         } else {
             holder.tvTotalAmountAndDescription.setText(friend.getFriendName() + " Paid " + friend.getTotalAmount()+  " and You owe " + (friend.getSplittedAmount()*-1) + "");
         }

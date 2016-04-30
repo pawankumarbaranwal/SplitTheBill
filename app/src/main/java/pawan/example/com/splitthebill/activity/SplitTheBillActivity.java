@@ -59,17 +59,17 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             Toast.makeText(this, "opopopop", Toast.LENGTH_SHORT).show();
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        tvAutocompleteFriendEmail = (AutoCompleteTextView)findViewById(R.id.tvAutocompleteFriendEmail);
-        etDescription = (EditText)findViewById(R.id.etDescription);
-        etMoney = (EditText)findViewById(R.id.etMoney);
-        tvCalculation = (TextView)findViewById(R.id.tvCalculation);
-        btnSplitSubmit = (Button)findViewById(R.id.btnSplitSubmit);
+        tvAutocompleteFriendEmail = (AutoCompleteTextView) findViewById(R.id.tvAutocompleteFriendEmail);
+        etDescription = (EditText) findViewById(R.id.etDescription);
+        etMoney = (EditText) findViewById(R.id.etMoney);
+        tvCalculation = (TextView) findViewById(R.id.tvCalculation);
+        btnSplitSubmit = (Button) findViewById(R.id.btnSplitSubmit);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, uniqueName.toArray(new String[uniqueName.size()]));
         tvAutocompleteFriendEmail.setAdapter(adapter);
 
@@ -120,7 +120,7 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        final Context context=this;
+        final Context context = this;
         if (view == tvCalculation) {
             final CharSequence[] scienarios = {
                     "Paid by You and Split Equally",
@@ -140,58 +140,57 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
             builder.show();
         }
         if (view == btnSplitSubmit) {
-            insertIntoDB(tvCalculation.getText() + "");
+            String friendEmail = tvAutocompleteFriendEmail.getText() + "";
+            String description = etDescription.getText() + "";
+            String money = etMoney.getText() + "";
+            if ((friendEmail.equals("")) || (description.equals("")) || (money.equals(""))) {
+                Toast.makeText(this, "Please enter the fields", Toast.LENGTH_LONG).show();
+            } else if (!listEmailId.contains(friendEmail)) {
+                Toast.makeText(this, "Friend Name is incorrect", Toast.LENGTH_LONG).show();
+            } else {
+                insertIntoDB(tvCalculation.getText() + "", friendEmail, description, money);
+            }
         }
     }
 
-    protected void insertIntoDB(String splitScienario) {
+    protected void insertIntoDB(String splitScienario, String friendEmail, String description, String money) {
         String query = "";
-        String friendEmail = tvAutocompleteFriendEmail.getText() + "";
-        String description = etDescription.getText() + "";
-        String money = etMoney.getText() + "";
+
         String friendName = getFriendName(friendEmail);
 
-        if (friendEmail.equals("") || description.equals("") || money.equals("")) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
-        } else if (!listEmailId.contains(friendEmail)) {
-            Toast.makeText(this, "Friend Name is incorrect", Toast.LENGTH_LONG).show();
+        if (splitScienario.equals("Paid by You and Split Equally")) {
+            query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
+                    "VALUES('" + friendName + "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
+        } else if (splitScienario.equals("Paid by You and Other Owe the full amount")) {
+            query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
+                    " VALUES('" + friendName + "','" + friendEmail + "', '" + description + "', '" + money + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
+        } else if (splitScienario.equals("Paid by Other and Split Equally")) {
+            query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
+                    " VALUES('" + friendName + "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + friendEmail + "');";
+        } else if (splitScienario.equals("Paid by Other and You Owe the full amount")) {
+            query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
+                    "VALUES('" + friendName + "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + friendEmail + "');";
         } else {
-            if (splitScienario.equals("Paid by You and Split Equally")) {
-                query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
-                        "VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
-            } else if (splitScienario.equals("Paid by You and Other Owe the full amount")) {
-                query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
-                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + money + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
-            } else if (splitScienario.equals("Paid by Other and Split Equally")) {
-                query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
-                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + friendEmail + "');";
-            } else if (splitScienario.equals("Paid by Other and You Owe the full amount")) {
-                query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy) " +
-                        "VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + "-" + Integer.parseInt(money) + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + friendEmail + "');";
-            } else {
-                query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
-                        " VALUES('" +friendName+ "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
-            }
-            db.execSQL(query);
-            Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show();
+            query = "INSERT INTO FRIENDS (FriendName,FriendEmailId,Description,SplittedAmount,TotalAmount,SpentDate,PaidBy)" +
+                    " VALUES('" + friendName + "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
         }
+        db.execSQL(query);
+        Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show();
     }
 
     private String getFriendName(String friendEmailId) {
         c = db.rawQuery("SELECT * FROM FRIENDS WHERE  FRIENDEMAILID ='" + friendEmailId + "' AND DESCRIPTION IS NULL ", null);
-        Log.i("testttttt","11");
-        if (c.moveToFirst())
-        {
+        Log.i("testttttt", "11");
+        if (c.moveToFirst()) {
             Log.i("testttttt", "11" + c.getString(1));
             return c.getString(1) + "";
 
-        }
-        else
-        {
-            Log.i("testttttt","11"+c.getString(1));
+        } else {
+            Log.i("testttttt", "11" + c.getString(1));
             return null;
         }
     }
+
     /**
      * react to the user tapping the back/up icon in the action bar
      */

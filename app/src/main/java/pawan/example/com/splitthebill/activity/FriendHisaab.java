@@ -57,7 +57,7 @@ public class FriendHisaab extends AppCompatActivity implements View.OnClickListe
 
         FriendsFragment friendsFragment = new FriendsFragment();
         friendsFragment.getTotalAmount(friendEmailId);
-        saveAsText();
+        //saveAsText();
         Integer totalAmount = getTotalAmount(friendEmailId);
         if (totalAmount > 0) {
             mToolbar.setTitle(friendEmailId + " will return " + totalAmount + "");
