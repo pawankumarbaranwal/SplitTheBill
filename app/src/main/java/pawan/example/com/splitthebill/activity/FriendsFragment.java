@@ -1,6 +1,7 @@
 package pawan.example.com.splitthebill.activity;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -97,7 +99,10 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddFriend.class);
-                startActivity(intent);
+                Bundle bndlanimation =
+                        ActivityOptions.makeCustomAnimation(getActivity(), R.anim.shifttotop_enter, R.anim.shifttotop_exit).toBundle();
+                getActivity().startActivity(intent, bndlanimation);
+
             }
         });
         return rootView;
@@ -207,5 +212,20 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         friend.setSplittedAmount(sum);
         finalFriendList.add(friend);
         //return sum;
+    }
+    /*@Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.shifttoright_enter, R.anim.shifttoright_exit);
+        }
+        else {
+            getFragmentManager().popBackStack();
+        }
+    }*/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

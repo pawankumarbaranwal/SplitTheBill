@@ -7,14 +7,12 @@
 
     <string name="nav_item_activities">Activities</string>
     <string name="nav_item_friends">Friends</string>
-    <string name="nav_item_notifications">Split Bill</string>
     <string name="nav_item_export_and_email">Export and Email</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_activities</item>
         <item>@string/nav_item_friends</item>
-        <item>@string/nav_item_notifications</item>
         <item>@string/nav_item_export_and_email</item>
     </string-array>
 

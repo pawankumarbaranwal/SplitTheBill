@@ -13,8 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -26,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-import pawan.example.com.splitthebill.dto.Friend;
-
 /**
  * Created by Pawan on 29/03/16.
  */
@@ -37,9 +36,8 @@ public class ExportAndEmailFragment extends Fragment implements View.OnClickList
     private Cursor c;
     Button btnExport;
     Button btnEmail;
-    TreeSet<String> uniqueName;
-    List<Friend> hisaabList = new ArrayList<Friend>();
-    TextView tvCalculation;
+    AutoCompleteTextView actvFriendsName;
+    List<String> listFriendName;
 
     public ExportAndEmailFragment() {
     }
@@ -56,8 +54,12 @@ public class ExportAndEmailFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_export_email, container, false);
 
+        actvFriendsName = (AutoCompleteTextView) rootView.findViewById(R.id.actvFriendsName);
         btnExport = (Button) rootView.findViewById(R.id.btnExport);
         btnEmail = (Button) rootView.findViewById(R.id.btnEmail);
+        listFriendName = retieveFriendName();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listFriendName.toArray(new String[listFriendName.size()]));
+        actvFriendsName.setAdapter(adapter);
 
         btnExport.setOnClickListener(this);
         btnEmail.setOnClickListener(this);
@@ -85,27 +87,37 @@ public class ExportAndEmailFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view == btnExport) {
-            List<String> listFriendName = retieveFriendName();
+
             for (int i = 0; i < listFriendName.size(); i++) {
                 saveAsText(listFriendName.get(i));
             }
         }
         if (view == btnEmail) {
+            if ((actvFriendsName.getText() + "").equals("")){
+                Toast.makeText(getActivity(),"Please Enter Friend Name",Toast.LENGTH_LONG).show();
+                return;
+            }else if (!listFriendName.contains(actvFriendsName.getText() + "")){
+                Toast.makeText(getActivity(),"Please Enter Correct Friend Name",Toast.LENGTH_LONG).show();
+                return;
+            }
+            saveAsText(actvFriendsName.getText() + "");
             Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
             emailIntent.setType("text/plain");
+/*
             emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
                     new String[]{"pawankumarbaranwal@gmail.com"});
             emailIntent.putExtra(android.content.Intent.EXTRA_CC,
                     new String[]{"pawankumarbaranwal@gmail.com"});
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "s");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "l");
+*/
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Details of "+actvFriendsName.getText()+"");
+            //emailIntent.putExtra(Intent.EXTRA_TEXT, "");
             //has to be an ArrayList
             ArrayList<Uri> uris = new ArrayList<Uri>();
             //convert from paths to Android friendly Parcelable Uri's
 
-                File fileIn = new File("/sdcard/SplitTheBill/rajat.txt");
-                Uri u = Uri.fromFile(fileIn);
-                uris.add(u);
+            File fileIn = new File("/sdcard/SplitTheBill/gggg.txt");
+            Uri u = Uri.fromFile(fileIn);
+            uris.add(u);
             emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
         }

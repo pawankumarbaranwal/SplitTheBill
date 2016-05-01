@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -57,10 +60,11 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.activity_split_the_bill);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("Split The Bill");
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            Toast.makeText(this, "opopopop", Toast.LENGTH_SHORT).show();
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -149,6 +153,21 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
                 Toast.makeText(this, "Friend Name is incorrect", Toast.LENGTH_LONG).show();
             } else {
                 insertIntoDB(tvCalculation.getText() + "", friendEmail, description, money);
+
+                final Toast toast = Toast.makeText(this, "Saved Successfully", Toast.LENGTH_SHORT);
+                toast.show();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast.cancel();
+                    }
+                }, 500);
+                MainActivity.ROW = 0;
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         }
     }
@@ -175,7 +194,6 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
                     " VALUES('" + friendName + "','" + friendEmail + "', '" + description + "', '" + Integer.parseInt(money) / 2 + "', '" + money + "', '" + Calendar.getInstance().getTimeInMillis() + "', '" + "You" + "');";
         }
         db.execSQL(query);
-        Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show();
     }
 
     private String getFriendName(String friendEmailId) {
@@ -201,9 +219,20 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
                 // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
                 // if this doesn't work as desired, another possibility is to call `finish()` here.
                 this.onBackPressed();
+                overridePendingTransition(R.anim.shifttobottom_enter, R.anim.shifttobottom_exit);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.shifttobottom_enter, R.anim.shifttobottom_exit);
+        } else {
+            getFragmentManager().popBackStack();
         }
     }
 }

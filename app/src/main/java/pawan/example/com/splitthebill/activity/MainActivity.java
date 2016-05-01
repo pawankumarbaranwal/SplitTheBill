@@ -1,10 +1,12 @@
 package pawan.example.com.splitthebill.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private FragmentDrawer drawerFragment;
     private SQLiteDatabase db;
     private Cursor c;
+    private Boolean exit = false;
+    public static int ROW = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setDrawerListener(this);
 
         // display the first navigation drawer view on app launch
-        displayView(3);
+        displayView(ROW);
     }
 
     private void createDatabase() {
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         dir.mkdirs();
 
 
-        db=this.openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
+        db = this.openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS FRIENDS (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," +
                 "FriendName VARCHAR, " +
                 "FriendEmailId VARCHAR," +
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -92,14 +97,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             return true;
         }
 
-       /* if(id == R.id.action_search){
+       *//* if(id == R.id.action_search){
             Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
             return true;
         }
-*/
+*//*
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @Override
     public void onDrawerItemSelected(View view, int position) {
         displayView(position);
@@ -118,10 +123,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_friends);
                 break;
             case 2:
-                fragment = new SplitTheBillFragment();
-                title = getString(R.string.title_split);
-                break;
-            case 3:
                 fragment = new ExportAndEmailFragment();
                 title = getString(R.string.title_export_and_email);
                 break;
@@ -133,10 +134,45 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
             // set the toolbar title
             getSupportActionBar().setTitle(title);
+        }
+    }
+
+    /* @Override
+     public void onBackPressed() {
+         if(getFragmentManager().getBackStackEntryCount() == 0) {
+             super.onBackPressed();
+             Toast.makeText(this,"yes",Toast.LENGTH_LONG).show();
+             return;
+         }
+         else {
+             getFragmentManager().popBackStack();
+             Toast.makeText(this, "no", Toast.LENGTH_LONG).show();
+         }
+     }*/
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+         //   finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
         }
     }
 }

@@ -5,6 +5,7 @@ package pawan.example.com.splitthebill.activity;
  */
 
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,7 +33,6 @@ import pawan.example.com.splitthebill.dto.Friend;
 
 public class ActivitiesFragment extends Fragment {
 
-    private FloatingActionButton fab;
     private SQLiteDatabase db;
     private Cursor c;
     private List<Friend> activityList = new ArrayList<Friend>();
@@ -76,7 +76,10 @@ public class ActivitiesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SplitTheBillActivity.class);
-                startActivity(intent);
+                Bundle bndlanimation =
+                        ActivityOptions.makeCustomAnimation(getActivity(), R.anim.shifttotop_enter, R.anim.shifttotop_exit).toBundle();
+                getActivity().startActivity(intent, bndlanimation);
+
             }
         });
         return rootView;
@@ -112,9 +115,9 @@ public class ActivitiesFragment extends Fragment {
     public List<Friend> getData() {
         Friend friend = new Friend();
         db = getActivity().openOrCreateDatabase("SplitTheBill", Context.MODE_PRIVATE, null);
-        c = db.rawQuery("SELECT * FROM FRIENDS WHERE DESCRIPTION IS NOT NULL ", null);
+        c = db.rawQuery("SELECT * FROM FRIENDS WHERE DESCRIPTION IS NOT NULL ORDER BY SPENTDATE DESC", null);
         if (c.moveToFirst()) {
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy : hh/mm/ss");
+            DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");// \n hh:mm:ss");
 
             long milliSeconds = Long.parseLong(c.getString(6));
             Log.i("pppppppp", milliSeconds + "");
