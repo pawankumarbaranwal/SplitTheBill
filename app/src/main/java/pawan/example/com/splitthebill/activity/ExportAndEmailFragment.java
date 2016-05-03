@@ -115,7 +115,7 @@ public class ExportAndEmailFragment extends Fragment implements View.OnClickList
             ArrayList<Uri> uris = new ArrayList<Uri>();
             //convert from paths to Android friendly Parcelable Uri's
 
-            File fileIn = new File("/sdcard/SplitTheBill/gggg.txt");
+            File fileIn = new File("/sdcard/SplitTheBill/"+actvFriendsName.getText()+".txt");
             Uri u = Uri.fromFile(fileIn);
             uris.add(u);
             emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);

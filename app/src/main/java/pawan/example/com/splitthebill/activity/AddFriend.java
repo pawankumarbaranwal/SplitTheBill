@@ -39,6 +39,7 @@ public class AddFriend extends AppCompatActivity implements View.OnClickListener
         etFriendEmailId=(EditText)findViewById(R.id.etEmail);
         submit=(Button)findViewById(R.id.btnSubmitFriendName);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setTitle("Add a Friend");
 
@@ -91,8 +92,8 @@ public class AddFriend extends AppCompatActivity implements View.OnClickListener
             }, 500);
 
 
-            MainActivity.ROW=1;
-            Intent intent =new Intent(this,MainActivity.class);
+            NewMainActivity.ROW=1;
+            Intent intent =new Intent(this,NewMainActivity.class);
             startActivity(intent);
             finish();
         }

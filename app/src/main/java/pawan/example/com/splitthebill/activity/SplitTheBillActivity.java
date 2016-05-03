@@ -60,6 +60,7 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.activity_split_the_bill);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("Split The Bill");
 
@@ -164,8 +165,8 @@ public class SplitTheBillActivity extends AppCompatActivity implements View.OnCl
                         toast.cancel();
                     }
                 }, 500);
-                MainActivity.ROW = 0;
-                Intent intent = new Intent(this, MainActivity.class);
+                NewMainActivity.ROW = 0;
+                Intent intent = new Intent(this, NewMainActivity.class);
                 startActivity(intent);
                 finish();
             }

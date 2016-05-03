@@ -53,6 +53,7 @@ public class FriendHisaab extends AppCompatActivity implements View.OnClickListe
         RecyclerViewAdapterForFriendHisaab adapter = new RecyclerViewAdapterForFriendHisaab(hisaabList, this);
         rvHisaabList.setAdapter(adapter);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         mToolbar.setTitleTextColor(Color.WHITE);
 
         FriendsFragment friendsFragment = new FriendsFragment();
@@ -232,7 +233,8 @@ public class FriendHisaab extends AppCompatActivity implements View.OnClickListe
         String[] whereArgs = new String[] { friendEmailId };
         String whereClause = " FriendEmailId" + "=?";
         db.delete("FRIENDS", whereClause, whereArgs);
-        Intent intent =new Intent(this,MainActivity.class);
+        NewMainActivity.ROW=1;
+        Intent intent =new Intent(this,NewMainActivity.class);
         startActivity(intent);
     }
     @Override
